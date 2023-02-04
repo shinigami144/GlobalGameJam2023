@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerScript : MonoBehaviour
+public class PlayerScript : Character
 {
 
     // ref to behaviour of the object
@@ -11,23 +11,13 @@ public class PlayerScript : MonoBehaviour
     [SerializeField]
     private Camera theMainCamera;
     public GameObject arrow;
-    public float dashRange;
-    private Rigidbody2D myRigidbody2D;
-    public float speed;
     // var from input
-    public Vector2 direction;
 
-    // var for the communication between function
-    private bool isDashing;
 
 
     private void Awake()
     {
-        dashRange = 2.5f;
-        speed = 12;
-        direction = new Vector2(1, 0);
-        myRigidbody2D = GetComponent<Rigidbody2D>();
-        isDashing = false;
+        DataInit();
     }
 
     // Start is called before the first frame update
@@ -59,22 +49,27 @@ public class PlayerScript : MonoBehaviour
 
     }
 
-    public IEnumerator Dash()
+
+    private void ChangeColor(Color theNewPlayerColor)
     {
-        isDashing = true;
-        myRigidbody2D.velocity = new Vector2(direction.x, direction.y) * dashRange * speed*transform.localScale.x;
-        yield return new WaitForSeconds(1/speed);
-        isDashing = false;
-        myRigidbody2D.velocity = new Vector2(0, 0);
+        GetComponent<SpriteRenderer>().color = theNewPlayerColor;
     }
 
     public void OnDash(InputAction.CallbackContext ctx)
     {
         if (ctx.started)
         {
-            if (!isDashing)
+            if (theMainCamera.GetComponent<Rythm>().CanDash())
             {
-                StartCoroutine(Dash());
+                ChangeColor(Color.green);
+                if (!isDashing)
+                {
+                    StartCoroutine(Dash());
+                }
+            }
+            else
+            {
+                ChangeColor(Color.red);
             }
         }
     }
