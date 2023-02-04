@@ -11,7 +11,8 @@ public class Rythm : MonoBehaviour
     private float accumulatedFrame = 0;
     private bool canInputDash = true;
 
-    private const float rythmTime = 0.75f;
+    private float bpm = 80.0f;
+    private  float rythmTime = 0;
     private const float timeCorrection = 0.2f;
 
 
@@ -39,6 +40,7 @@ public class Rythm : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        rythmTime=  60.0f / bpm;
         distanceToTravel = destinationSquare.rectTransform.position.x - barStartPos.x;
 
         verticalDistanceToGrow = haloStartSize.y - destinationSquare.rectTransform.sizeDelta.y;
@@ -70,6 +72,7 @@ public class Rythm : MonoBehaviour
 
     public bool CanDash()
     {
+        //bool canDash = true;
         bool canDash = (accumulatedFrame < timeCorrection || accumulatedFrame > (rythmTime - timeCorrection)&& canInputDash);
         canInputDash = false;
         if (canDash)

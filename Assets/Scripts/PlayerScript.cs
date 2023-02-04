@@ -8,22 +8,37 @@ public class PlayerScript : Character
 
     // ref to behaviour of the object
     private PlayerInput myPlayerInput;
-    [SerializeField]
     private Camera theMainCamera;
+    private ManageVision myVisionScript;
     public GameObject arrow;
     // var from input
 
+    private EnnemyMouvementScript theEnnemyFollowMe;
 
+    public EnnemyMouvementScript TheEnnemyFollowMe
+    {
+        get
+        {
+            return theEnnemyFollowMe;
+        }
+        set
+        {
+            theEnnemyFollowMe = value;
+        }
+    }
 
     private void Awake()
     {
         DataInit();
+        theMainCamera = FindAnyObjectByType<Camera>();
+        myVisionScript = GetComponentInChildren<ManageVision>();
+        myVisionScript.theEnnemy = theEnnemyFollowMe;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        //myVisionScript.theEnnemy = theEnnemyFollowMe;
     }
 
     // Update is called once per frame

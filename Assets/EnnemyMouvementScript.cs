@@ -7,13 +7,14 @@ public class EnnemyMouvementScript : Character
 {
     // Start is called before the first frame update
     [SerializeField]
-    private PlayerScript player;
+    private PlayerScript TargetPlayer;
 
 
     private void Awake()
     {
         DataInit();
         dashRange *= 0.7f;
+        TargetPlayer.TheEnnemyFollowMe = this;
     }
     void Start()
     {
@@ -34,7 +35,7 @@ public class EnnemyMouvementScript : Character
 
     private void EnnemyDash()
     {
-        direction = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y).normalized;
+        direction = new Vector2(TargetPlayer.transform.position.x - transform.position.x, TargetPlayer.transform.position.y - transform.position.y).normalized;
         StartCoroutine(Dash());
     }
 
@@ -44,8 +45,5 @@ public class EnnemyMouvementScript : Character
     }
 
 
-    private void OnDisable()
-    {
-        FindObjectOfType<Rythm>().RestartCycle -= EnnemyDash;
-    }
+   
 }
