@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class Rythm : MonoBehaviour
 {
 
     private float accumulatedFrame = 0;
-    private bool canMove = true;
+    private bool canInputDash = true;
 
-    private const float rythmTime = 0.75f;
+    private float bpm = 80.0f;
+    private  float rythmTime = 0;
     private const float timeCorrection = 0.2f;
 
+
+    public delegate void RC();
+    public event RC RestartCycle;
 
     [SerializeField]
     private Image rythmBar;
@@ -35,6 +40,7 @@ public class Rythm : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        rythmTime=  60.0f / bpm;
         distanceToTravel = destinationSquare.rectTransform.position.x - barStartPos.x;
 
         verticalDistanceToGrow = haloStartSize.y - destinationSquare.rectTransform.sizeDelta.y;
@@ -56,26 +62,28 @@ public class Rythm : MonoBehaviour
 
         if (accumulatedFrame >= rythmTime)
         {
-            //Debug.Log("Boum !");
             accumulatedFrame = 0;
-            canMove = true;
+            canInputDash = true;
             rythmBar.transform.position = barStartPos;
-
+            RestartCycle.Invoke();
         }
+    }
 
-        if(Input.GetKeyUp(KeyCode.Space) && canMove)
+
+    public bool CanDash()
+    {
+        //bool canDash = true;
+        bool canDash = (accumulatedFrame < timeCorrection || accumulatedFrame > (rythmTime - timeCorrection)&& canInputDash);
+        canInputDash = false;
+        if (canDash)
         {
-            canMove = false;
-            if (accumulatedFrame < timeCorrection || accumulatedFrame > (rythmTime - timeCorrection))
-            {
-                float randomR = Random.Range(0, 255) / 255.0f;
-                float randomG = Random.Range(0, 255) / 255.0f;
-                float randomB = Random.Range(0, 255) / 255.0f;
+            float randomR = Random.Range(0, 255) / 255.0f;
+            float randomG = Random.Range(0, 255) / 255.0f;
+            float randomB = Random.Range(0, 255) / 255.0f;
 
-                destinationSquare.GetComponent<Image>().color = new Color(randomR, randomG, randomB);
-                //Debug.Log("Aïe");
-            }
-                
+            destinationSquare.GetComponent<Image>().color = new Color(randomR, randomG, randomB,0);
+            //Debug.Log("Aïe");
         }
+        return canDash;
     }
 }
