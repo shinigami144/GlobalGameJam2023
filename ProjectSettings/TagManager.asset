@@ -12,8 +12,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - HaloLayer
+  - Player
   - 
   - 
   - 
@@ -39,6 +39,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Player
+    uniqueID: 1170290027
+    locked: 0
+  - name: HaloLayer
+    uniqueID: 1480969839
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
