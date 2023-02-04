@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6581182829836069521}
   - component: {fileID: 1389593859337167697}
+  - component: {fileID: 5412371222588208500}
   m_Layer: 0
   m_Name: Halo
   m_TagString: Untagged
@@ -84,6 +85,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5412371222588208500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015858318412536370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2723a85a85d1c344685a7e97ab5b6591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destinationSquare: {fileID: 6389907608446640481}
+  halo: {fileID: 2015858318412536370}
 --- !u!1 &4297889909576613387
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,7 +115,7 @@ GameObject:
   - component: {fileID: 1824974513782794522}
   - component: {fileID: 7085375805733285100}
   m_Layer: 7
-  m_Name: Square
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

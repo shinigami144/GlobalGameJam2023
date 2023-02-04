@@ -114,7 +114,7 @@ public class PlayerScript : Character
     {
         if (ctx.started)
         {
-            if (theMainCamera.GetComponent<Rythm>().CanDash())
+            if (this.GetComponentInChildren<Rythm>().CanDash())
             {
                 ChangeColor(Color.green);
                 if (!isDashing)
