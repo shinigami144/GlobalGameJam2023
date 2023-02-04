@@ -667,6 +667,8 @@ GameObject:
   - component: {fileID: 987465419}
   - component: {fileID: 987465421}
   - component: {fileID: 987465420}
+  - component: {fileID: 987465422}
+  - component: {fileID: 987465423}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -714,8 +716,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: aca5a791503afba47b854cdf3ddee5c1, type: 3}
-  m_Type: 2
+  m_Sprite: {fileID: 21300000, guid: 4936c372f18436d448baa7cac293018b, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -732,6 +734,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 987465418}
   m_CullTransparentMesh: 1
+--- !u!111 &987465422
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987465418}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: c6fe0f048fc2bb248ba85f95a094911e, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 4e6772ca9ebb7494c96f7578c8acbb5c, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!95 &987465423
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987465418}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 80a16ae308952bd4898c6c058d999240, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &1041011339
 GameObject:
   m_ObjectHideFlags: 0
@@ -1264,7 +1302,7 @@ VideoPlayer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1557928554}
-  m_Enabled: 0
+  m_Enabled: 1
   m_VideoClip: {fileID: 32900000, guid: ee5a571b41e8b0d47b58a43e4354dc46, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0

@@ -10,6 +10,7 @@ public class PlayerScript : Character
     private PlayerInput myPlayerInput;
     private Camera theMainCamera;
     private ManageVision myVisionScript;
+    private Animator myAnimator;
     public GameObject arrow;
     // var from input
 
@@ -33,6 +34,7 @@ public class PlayerScript : Character
         theMainCamera = FindAnyObjectByType<Camera>();
         myVisionScript = GetComponentInChildren<ManageVision>();
         myVisionScript.theEnnemy = theEnnemyFollowMe;
+        myAnimator = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -64,6 +66,44 @@ public class PlayerScript : Character
 
     }
 
+    private string GetCorrectAnimationForTheMovement()
+    {
+        string nameAnimationToPlay = "Base Layer.Idle";
+        if(direction.x < 0.2 && direction.x > -0.2)
+        {
+            nameAnimationToPlay = "Base Layer.DashUp";
+        }
+        else if(direction.y < 0.2 && direction.y > -0.2)
+        {
+            nameAnimationToPlay = "Base Layer.DashRight";
+        }
+        else if(direction.x != 0 && direction.y != 0)
+        {
+            if(direction.x * direction.y > 0)
+            {
+                nameAnimationToPlay = "Base Layer.DashDIagonalNE";
+            }
+            else
+            {
+                nameAnimationToPlay = "Base Layer.DashDIagonalSE";
+            }
+        }
+        return nameAnimationToPlay;
+
+    }
+
+
+    override public IEnumerator Dash()
+    {
+        isDashing = true;
+        myAnimator.Play(GetCorrectAnimationForTheMovement());
+        myRigidbody2D.velocity = new Vector2(direction.x, direction.y) * dashRange * speed * transform.localScale.x;
+        yield return new WaitForSeconds(1/speed);
+        isDashing = false;
+        myRigidbody2D.velocity = new Vector2(0, 0);
+        myAnimator.Play("Base Layer.Idle");
+
+    }
 
     private void ChangeColor(Color theNewPlayerColor)
     {
