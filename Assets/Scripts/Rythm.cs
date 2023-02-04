@@ -20,18 +20,11 @@ public class Rythm : MonoBehaviour
     public event RC RestartCycle;
 
     [SerializeField]
-    private Image rythmBar;
-
-    private Vector2 barStartPos = new Vector2(-300, 0);
+    private GameObject destinationSquare;
 
     [SerializeField]
-    private Image destinationSquare;
-
-    private float distanceToTravel = 0;
-
-    [SerializeField]
-    private Image haloSquare;
-    private Vector2 haloStartSize = new Vector2(200, 200);
+    private GameObject halo;
+    private Vector2 haloStartSize = new Vector2(2, 2);
 
     private float verticalDistanceToGrow = 0;
     private float horizontalDistanceToGrow = 0;
@@ -41,21 +34,19 @@ public class Rythm : MonoBehaviour
     void Start()
     {
         rythmTime=  60.0f / bpm;
-        distanceToTravel = destinationSquare.rectTransform.position.x - barStartPos.x;
 
-        verticalDistanceToGrow = haloStartSize.y - destinationSquare.rectTransform.sizeDelta.y;
-        horizontalDistanceToGrow = haloStartSize.x - destinationSquare.rectTransform.sizeDelta.x;
+        verticalDistanceToGrow = haloStartSize.y - destinationSquare.transform.localScale.y;
+        horizontalDistanceToGrow = haloStartSize.x - destinationSquare.transform.localScale.x;
     }
 
     // Update is called once per frame
     void Update()
     {
         accumulatedFrame += Time.deltaTime;
-        rythmBar.rectTransform.position = new Vector2(barStartPos.x + distanceToTravel / rythmTime * accumulatedFrame, 0);
 
 
-        haloSquare.rectTransform.sizeDelta = new Vector2 (haloStartSize.x - horizontalDistanceToGrow / rythmTime * accumulatedFrame, haloStartSize.y - verticalDistanceToGrow / rythmTime * accumulatedFrame);
-        haloSquare.GetComponent<Image>().color = new Color(1, 1, 1, accumulatedFrame/rythmTime);
+        halo.transform.localScale = new Vector2 (haloStartSize.x - horizontalDistanceToGrow / rythmTime * accumulatedFrame, haloStartSize.y - verticalDistanceToGrow / rythmTime * accumulatedFrame);
+        halo.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.75f*accumulatedFrame/rythmTime);
 
         
 
@@ -64,7 +55,6 @@ public class Rythm : MonoBehaviour
         {
             accumulatedFrame = 0;
             canInputDash = true;
-            rythmBar.transform.position = barStartPos;
             RestartCycle.Invoke();
         }
     }
@@ -75,15 +65,6 @@ public class Rythm : MonoBehaviour
         //bool canDash = true;
         bool canDash = (accumulatedFrame < timeCorrection || accumulatedFrame > (rythmTime - timeCorrection)&& canInputDash);
         canInputDash = false;
-        if (canDash)
-        {
-            float randomR = Random.Range(0, 255) / 255.0f;
-            float randomG = Random.Range(0, 255) / 255.0f;
-            float randomB = Random.Range(0, 255) / 255.0f;
-
-            destinationSquare.GetComponent<Image>().color = new Color(randomR, randomG, randomB,0);
-            //Debug.Log("Aïe");
-        }
         return canDash;
     }
 }
