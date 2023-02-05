@@ -5,6 +5,8 @@ using UnityEngine;
 public class TriggerEndLevelScript : MonoBehaviour
 {
     // Start is called before the first frame update
+    [SerializeField]
+    CanevasManagerScript endCanevas;
     void Start()
     {
         
@@ -19,7 +21,7 @@ public class TriggerEndLevelScript : MonoBehaviour
     {
         if(collision.gameObject.GetComponent<PlayerScript>() != null)
         {
-            Debug.Log("END OF THE LEVEL");
+            endCanevas.ShowCanevasWithWinMessage();
         }
     }
 }

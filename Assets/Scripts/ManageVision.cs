@@ -34,7 +34,6 @@ public class ManageVision : MonoBehaviour
         float verticalDistance = transform.position.y - enemy.transform.position.y;
         float horizontalDistance = transform.position.x - enemy.transform.position.x;
         float distanceBetweenEnemyAndPlayer = Mathf.Sqrt(Mathf.Pow(verticalDistance,2) + Mathf.Pow(horizontalDistance,2));
-
-        transform.localScale = 20f * distanceBetweenEnemyAndPlayer * new Vector2(1, 1);
+        transform.localScale = 0.5f * distanceBetweenEnemyAndPlayer * new Vector2(1, 1);
     }
 }

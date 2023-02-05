@@ -30,6 +30,7 @@ public class PlayerScript : Character
 
     private void Awake()
     {
+        
         DataInit();
         theMainCamera = FindAnyObjectByType<Camera>();
         myVisionScript = GetComponentInChildren<ManageVision>();
@@ -69,24 +70,21 @@ public class PlayerScript : Character
     private string GetCorrectAnimationForTheMovement()
     {
         string nameAnimationToPlay = "Base Layer.Idle";
-        if(direction.x < 0.2 && direction.x > -0.2)
-        {
-            nameAnimationToPlay = "Base Layer.DashUp";
-        }
-        else if(direction.y < 0.2 && direction.y > -0.2)
+        if(direction.x > 0.5)
         {
             nameAnimationToPlay = "Base Layer.DashRight";
         }
-        else if(direction.x != 0 && direction.y != 0)
+        else if (direction.y > 0.5)
         {
-            if(direction.x * direction.y > 0)
-            {
-                nameAnimationToPlay = "Base Layer.DashDIagonalNE";
-            }
-            else
-            {
-                nameAnimationToPlay = "Base Layer.DashDIagonalSE";
-            }
+            nameAnimationToPlay = "Base Layer.DashUp";
+        }
+        else if (direction.x < -0.5)
+        {
+            nameAnimationToPlay = "Base Layer.DashLeft";
+        }
+        else if (direction.y < -0.5)
+        {
+            nameAnimationToPlay = "Base Layer.DashDown";
         }
         return nameAnimationToPlay;
 
@@ -105,26 +103,18 @@ public class PlayerScript : Character
 
     }
 
-    private void ChangeColor(Color theNewPlayerColor)
-    {
-        GetComponent<SpriteRenderer>().color = theNewPlayerColor;
-    }
 
     public void OnDash(InputAction.CallbackContext ctx)
     {
+        
         if (ctx.started)
         {
-            if (theMainCamera.GetComponent<Rythm>().CanDash())
-            {
-                ChangeColor(Color.green);
+            if (this.GetComponentInChildren<Rythm>().CanDash())
+            { 
                 if (!isDashing)
                 {
                     StartCoroutine(Dash());
                 }
-            }
-            else
-            {
-                ChangeColor(Color.red);
             }
         }
     }

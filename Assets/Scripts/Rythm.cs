@@ -8,82 +8,95 @@ using UnityEngine.Events;
 public class Rythm : MonoBehaviour
 {
 
-    private float accumulatedFrame = 0;
     private bool canInputDash = true;
-
-    private float bpm = 80.0f;
-    private  float rythmTime = 0;
-    private const float timeCorrection = 0.2f;
-
+    private bool auredyDash = false;
+    [SerializeField]
+    private float bpm = 60;
+    [SerializeField]
+    private float rythmTime = 0;
+    private float timeCorrection = 0.17f;
+    [SerializeField]
+    private float ecouledTime = 0;
 
     public delegate void RC();
     public event RC RestartCycle;
 
     [SerializeField]
-    private Image rythmBar;
-
-    private Vector2 barStartPos = new Vector2(-300, 0);
+    private GameObject destinationSquare;
 
     [SerializeField]
-    private Image destinationSquare;
+    private GameObject halo;
+    private Vector2 haloStartSize = new Vector2(2, 2);
 
-    private float distanceToTravel = 0;
-
-    [SerializeField]
-    private Image haloSquare;
-    private Vector2 haloStartSize = new Vector2(200, 200);
-
-    private float verticalDistanceToGrow = 0;
-    private float horizontalDistanceToGrow = 0;
-
+    private Vector2 maxReductionSize;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         rythmTime=  60.0f / bpm;
-        distanceToTravel = destinationSquare.rectTransform.position.x - barStartPos.x;
+        timeCorrection = rythmTime / 4;
+        ecouledTime = 0;
+        StartCoroutine(DashAllowerCalculation());
+        Camera.main.gameObject.GetComponent<AudioSource>().Play();
 
-        verticalDistanceToGrow = haloStartSize.y - destinationSquare.rectTransform.sizeDelta.y;
-        horizontalDistanceToGrow = haloStartSize.x - destinationSquare.rectTransform.sizeDelta.x;
+        maxReductionSize = Vector2.zero;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        accumulatedFrame += Time.deltaTime;
-        rythmBar.rectTransform.position = new Vector2(barStartPos.x + distanceToTravel / rythmTime * accumulatedFrame, 0);
 
+        halo.transform.localScale = haloStartSize - maxReductionSize;
+    }
 
-        haloSquare.rectTransform.sizeDelta = new Vector2 (haloStartSize.x - horizontalDistanceToGrow / rythmTime * accumulatedFrame, haloStartSize.y - verticalDistanceToGrow / rythmTime * accumulatedFrame);
-        haloSquare.GetComponent<Image>().color = new Color(1, 1, 1, accumulatedFrame/rythmTime);
-
+    private void FixedUpdate()
+    {
         
+    }
 
-
-        if (accumulatedFrame >= rythmTime)
+    IEnumerator DashAllowerCalculation()
+    {
+        while (true)
         {
-            accumulatedFrame = 0;
-            canInputDash = true;
-            rythmBar.transform.position = barStartPos;
-            RestartCycle.Invoke();
+            ecouledTime += rythmTime / 100;
+            maxReductionSize = new Vector2(Mathf.Sin(ecouledTime/rythmTime), Mathf.Sin(ecouledTime / rythmTime));
+            if (ecouledTime >= rythmTime - timeCorrection)
+            {
+                halo.GetComponent<SpriteRenderer>().color = Color.green;
+                canInputDash = true;
+            }
+            if(ecouledTime >= rythmTime)
+            {
+                maxReductionSize = new Vector2(0, 0);
+                ecouledTime = 0;
+                RestartCycle.Invoke();
+                StartCoroutine(DelayTheResetOfTheDash());
+            }
+            yield return new WaitForSeconds(rythmTime/100);
+
         }
     }
+
+    IEnumerator DelayTheResetOfTheDash()
+    {
+        yield return new WaitForSeconds(timeCorrection);
+        canInputDash = false;
+        halo.GetComponent<SpriteRenderer>().color = Color.white;
+        auredyDash = false;
+    }
+
 
 
     public bool CanDash()
     {
-        //bool canDash = true;
-        bool canDash = (accumulatedFrame < timeCorrection || accumulatedFrame > (rythmTime - timeCorrection)&& canInputDash);
-        canInputDash = false;
-        if (canDash)
+        Debug.Log(auredyDash);
+        if (!auredyDash)
         {
-            float randomR = Random.Range(0, 255) / 255.0f;
-            float randomG = Random.Range(0, 255) / 255.0f;
-            float randomB = Random.Range(0, 255) / 255.0f;
-
-            destinationSquare.GetComponent<Image>().color = new Color(randomR, randomG, randomB,0);
-            //Debug.Log("Aïe");
+            auredyDash = true;
+            return canInputDash;
         }
-        return canDash;
+        auredyDash = true;
+        return false;
     }
 }
