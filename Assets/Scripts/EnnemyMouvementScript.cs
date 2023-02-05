@@ -8,8 +8,6 @@ public class EnnemyMouvementScript : Character
     // Start is called before the first frame update
     [SerializeField]
     private PlayerScript TargetPlayer;
-    [SerializeField]
-    private CanevasManagerScript endCanevas;
 
 
     private void Awake()
@@ -39,7 +37,7 @@ public class EnnemyMouvementScript : Character
     {
         if(collision.GetComponent<PlayerScript>() != null)
         {
-            MenuManagers.Instance.GoToMenu();
+            MenuManagers.Instance.GoToLoseScene();
         }
     }
 

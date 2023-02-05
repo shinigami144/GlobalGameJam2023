@@ -51,6 +51,16 @@ public class MenuManagers : MonoBehaviour
         GoToMenu();
     }
 
+    public void GoToWinScene()
+    {
+        SceneManager.LoadScene(5);
+    }
+
+    public void GoToLoseScene()
+    {
+        SceneManager.LoadScene(6);
+    }
+
 #if UNITY_EDITOR
 
     public void DebugButton()

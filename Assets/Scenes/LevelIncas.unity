@@ -770,7 +770,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1267,7 +1267,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!60 &1675603254
 PolygonCollider2D:
@@ -3266,7 +3266,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2700413239635195434, guid: 59b31d77948c20847ac048219ce5af6e, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2700413239635195434, guid: 59b31d77948c20847ac048219ce5af6e, type: 3}
       propertyPath: m_LocalScale.x
@@ -3849,6 +3849,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3270543861543391622, guid: 10c97441ac8dd1b4d90f1c26d9fed065, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3270543861543391623, guid: 10c97441ac8dd1b4d90f1c26d9fed065, type: 3}
       propertyPath: m_Name
       value: EnnemyCreature
@@ -3962,6 +3966,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1720312207651378276, guid: 89912f7eca5a8324d93ae9c8b1291f11, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 152594fde99c3bb4b946d16f37530b93, type: 3}
     - target: {fileID: 1720312208250222614, guid: 89912f7eca5a8324d93ae9c8b1291f11, type: 3}
       propertyPath: m_Name
       value: Square
