@@ -12,9 +12,11 @@ public class Rythm : MonoBehaviour
     private bool canInputDash = true;
     [SerializeField]
     private float bpm = 60;
-    private  float rythmTime = 0;
+    [SerializeField]
+    private float rythmTime = 0;
     private float timeCorrection = 0.17f;
-
+    [SerializeField]
+    private float ecouledTime = 0;
 
     public delegate void RC();
     public event RC RestartCycle;
@@ -26,8 +28,7 @@ public class Rythm : MonoBehaviour
     private GameObject halo;
     private Vector2 haloStartSize = new Vector2(2, 2);
 
-    private float verticalDistanceToGrow = 0;
-    private float horizontalDistanceToGrow = 0;
+    private Vector2 maxReductionSize;
 
 
     // Start is called before the first frame update
@@ -35,22 +36,25 @@ public class Rythm : MonoBehaviour
     {
         rythmTime=  60.0f / bpm;
         timeCorrection = rythmTime / 4;
+        ecouledTime = 0;
         StartCoroutine(DashAllowerCalculation());
         Camera.main.gameObject.GetComponent<AudioSource>().Play();
 
-        verticalDistanceToGrow = haloStartSize.y - destinationSquare.transform.localScale.y;
-        horizontalDistanceToGrow = haloStartSize.x - destinationSquare.transform.localScale.x;
+        maxReductionSize = Vector2.zero;
         
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        halo.transform.localScale = haloStartSize - maxReductionSize;
+        /*
         accumulatedFrame += Time.deltaTime;
 
 
         halo.transform.localScale = new Vector2 (haloStartSize.x - horizontalDistanceToGrow / rythmTime * accumulatedFrame, haloStartSize.y - verticalDistanceToGrow / rythmTime * accumulatedFrame);
-        //halo.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.75f*accumulatedFrame/rythmTime);
+        halo.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.75f*accumulatedFrame/rythmTime);
 
         
 
@@ -61,12 +65,36 @@ public class Rythm : MonoBehaviour
             accumulatedFrame = 0;
             //canInputDash = true;
             //RestartCycle.Invoke();
-        }
+        }*/
     }
 
+    private void FixedUpdate()
+    {
+        
+    }
 
     IEnumerator DashAllowerCalculation()
     {
+        while (true)
+        {
+            ecouledTime += rythmTime / 100;
+            maxReductionSize = new Vector2(Mathf.Sin(ecouledTime/rythmTime), Mathf.Sin(ecouledTime / rythmTime));
+            if (ecouledTime >= rythmTime - timeCorrection)
+            {
+                halo.GetComponent<SpriteRenderer>().color = Color.green;
+                canInputDash = true;
+            }
+            if(ecouledTime >= rythmTime)
+            {
+                maxReductionSize = new Vector2(0, 0);
+                ecouledTime = 0;
+                RestartCycle.Invoke();
+                StartCoroutine(DelayTheResetOfTheDash());
+            }
+            yield return new WaitForSeconds(rythmTime/100);
+
+        }
+        /*
         yield return new WaitForSeconds(rythmTime);
         while (true) {
             yield return new WaitForSeconds(rythmTime - timeCorrection);
@@ -81,24 +109,20 @@ public class Rythm : MonoBehaviour
             RestartCycle.Invoke();
             Invoke(nameof(DelayedDashStop), timeCorrection);
 
-        }
+        }*/
     }
 
-    private void DelayedDashStop()
+    IEnumerator DelayTheResetOfTheDash()
     {
+        yield return new WaitForSeconds(timeCorrection);
         canInputDash = false;
         halo.GetComponent<SpriteRenderer>().color = Color.white;
-        Debug.Log("Stop");
-        Debug.Log(Time.realtimeSinceStartup);
     }
 
 
 
     public bool CanDash()
     {
-        ////bool canDash = true;
-        //bool canDash = (accumulatedFrame < timeCorrection || accumulatedFrame > (rythmTime - timeCorrection)&& canInputDash);
-        //canInputDash = false;
        
         return canInputDash;
        
