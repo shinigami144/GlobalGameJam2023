@@ -8,8 +8,8 @@ using UnityEngine.Events;
 public class Rythm : MonoBehaviour
 {
 
-    private float accumulatedFrame = 0;
     private bool canInputDash = true;
+    private bool auredyDash = false;
     [SerializeField]
     private float bpm = 60;
     [SerializeField]
@@ -30,7 +30,6 @@ public class Rythm : MonoBehaviour
 
     private Vector2 maxReductionSize;
 
-
     // Start is called before the first frame update
     void Awake()
     {
@@ -49,23 +48,6 @@ public class Rythm : MonoBehaviour
     {
 
         halo.transform.localScale = haloStartSize - maxReductionSize;
-        /*
-        accumulatedFrame += Time.deltaTime;
-
-
-        halo.transform.localScale = new Vector2 (haloStartSize.x - horizontalDistanceToGrow / rythmTime * accumulatedFrame, haloStartSize.y - verticalDistanceToGrow / rythmTime * accumulatedFrame);
-        halo.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.75f*accumulatedFrame/rythmTime);
-
-        
-
-
-        if (accumulatedFrame >= rythmTime)
-        {
-            
-            accumulatedFrame = 0;
-            //canInputDash = true;
-            //RestartCycle.Invoke();
-        }*/
     }
 
     private void FixedUpdate()
@@ -94,22 +76,6 @@ public class Rythm : MonoBehaviour
             yield return new WaitForSeconds(rythmTime/100);
 
         }
-        /*
-        yield return new WaitForSeconds(rythmTime);
-        while (true) {
-            yield return new WaitForSeconds(rythmTime - timeCorrection);
-            canInputDash = true;
-            Debug.Log("Go");
-            Debug.Log(Time.realtimeSinceStartup);
-            halo.GetComponent<SpriteRenderer>().color = Color.green;
-            yield return new WaitForSeconds(timeCorrection);
-            Debug.Log("Bump");
-            Debug.Log(Time.realtimeSinceStartup);
-
-            RestartCycle.Invoke();
-            Invoke(nameof(DelayedDashStop), timeCorrection);
-
-        }*/
     }
 
     IEnumerator DelayTheResetOfTheDash()
@@ -117,14 +83,20 @@ public class Rythm : MonoBehaviour
         yield return new WaitForSeconds(timeCorrection);
         canInputDash = false;
         halo.GetComponent<SpriteRenderer>().color = Color.white;
+        auredyDash = false;
     }
 
 
 
     public bool CanDash()
     {
-       
-        return canInputDash;
-       
+        Debug.Log(auredyDash);
+        if (!auredyDash)
+        {
+            auredyDash = true;
+            return canInputDash;
+        }
+        auredyDash = true;
+        return false;
     }
 }

@@ -103,29 +103,18 @@ public class PlayerScript : Character
 
     }
 
-    private void ChangeColor(Color theNewPlayerColor)
-    {
-        //GetComponent<SpriteRenderer>().color = theNewPlayerColor;
-    }
 
     public void OnDash(InputAction.CallbackContext ctx)
     {
         
         if (ctx.started)
         {
-            Debug.Log("Pressed");
-            Debug.Log(Time.realtimeSinceStartup);
             if (this.GetComponentInChildren<Rythm>().CanDash())
-            {
-                ChangeColor(Color.green);
+            { 
                 if (!isDashing)
                 {
                     StartCoroutine(Dash());
                 }
-            }
-            else
-            {
-                ChangeColor(Color.red);
             }
         }
     }
