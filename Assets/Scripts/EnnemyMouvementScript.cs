@@ -33,6 +33,14 @@ public class EnnemyMouvementScript : Character
     }
 
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.GetComponent<PlayerScript>() != null)
+        {
+            Debug.Log("PERDU");
+        }
+    }
+
     private void EnnemyDash()
     {
         direction = new Vector2(TargetPlayer.transform.position.x - transform.position.x, TargetPlayer.transform.position.y - transform.position.y).normalized;
