@@ -10,10 +10,10 @@ public class Rythm : MonoBehaviour
 
     private float accumulatedFrame = 0;
     private bool canInputDash = true;
-
-    private float bpm = 80.0f;
+    [SerializeField]
+    private float bpm = 60;
     private  float rythmTime = 0;
-    private const float timeCorrection = 0.2f;
+    private float timeCorrection = 0.17f;
 
 
     public delegate void RC();
@@ -31,12 +31,16 @@ public class Rythm : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         rythmTime=  60.0f / bpm;
+        timeCorrection = rythmTime / 4;
+        StartCoroutine(DashAllowerCalculation());
+        Camera.main.gameObject.GetComponent<AudioSource>().Play();
 
         verticalDistanceToGrow = haloStartSize.y - destinationSquare.transform.localScale.y;
         horizontalDistanceToGrow = haloStartSize.x - destinationSquare.transform.localScale.x;
+        
     }
 
     // Update is called once per frame
@@ -46,25 +50,57 @@ public class Rythm : MonoBehaviour
 
 
         halo.transform.localScale = new Vector2 (haloStartSize.x - horizontalDistanceToGrow / rythmTime * accumulatedFrame, haloStartSize.y - verticalDistanceToGrow / rythmTime * accumulatedFrame);
-        halo.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.75f*accumulatedFrame/rythmTime);
+        //halo.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.75f*accumulatedFrame/rythmTime);
 
         
 
 
         if (accumulatedFrame >= rythmTime)
         {
+            
             accumulatedFrame = 0;
-            canInputDash = true;
-            RestartCycle.Invoke();
+            //canInputDash = true;
+            //RestartCycle.Invoke();
         }
     }
 
 
+    IEnumerator DashAllowerCalculation()
+    {
+        yield return new WaitForSeconds(rythmTime);
+        while (true) {
+            yield return new WaitForSeconds(rythmTime - timeCorrection);
+            canInputDash = true;
+            Debug.Log("Go");
+            Debug.Log(Time.realtimeSinceStartup);
+            halo.GetComponent<SpriteRenderer>().color = Color.green;
+            yield return new WaitForSeconds(timeCorrection);
+            Debug.Log("Bump");
+            Debug.Log(Time.realtimeSinceStartup);
+
+            RestartCycle.Invoke();
+            Invoke(nameof(DelayedDashStop), timeCorrection);
+
+        }
+    }
+
+    private void DelayedDashStop()
+    {
+        canInputDash = false;
+        halo.GetComponent<SpriteRenderer>().color = Color.white;
+        Debug.Log("Stop");
+        Debug.Log(Time.realtimeSinceStartup);
+    }
+
+
+
     public bool CanDash()
     {
-        //bool canDash = true;
-        bool canDash = (accumulatedFrame < timeCorrection || accumulatedFrame > (rythmTime - timeCorrection)&& canInputDash);
-        canInputDash = false;
-        return canDash;
+        ////bool canDash = true;
+        //bool canDash = (accumulatedFrame < timeCorrection || accumulatedFrame > (rythmTime - timeCorrection)&& canInputDash);
+        //canInputDash = false;
+       
+        return canInputDash;
+       
     }
 }

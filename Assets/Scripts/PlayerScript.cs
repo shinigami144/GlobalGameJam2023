@@ -30,6 +30,7 @@ public class PlayerScript : Character
 
     private void Awake()
     {
+        
         DataInit();
         theMainCamera = FindAnyObjectByType<Camera>();
         myVisionScript = GetComponentInChildren<ManageVision>();
@@ -107,13 +108,16 @@ public class PlayerScript : Character
 
     private void ChangeColor(Color theNewPlayerColor)
     {
-        GetComponent<SpriteRenderer>().color = theNewPlayerColor;
+        //GetComponent<SpriteRenderer>().color = theNewPlayerColor;
     }
 
     public void OnDash(InputAction.CallbackContext ctx)
     {
+        
         if (ctx.started)
         {
+            Debug.Log("Pressed");
+            Debug.Log(Time.realtimeSinceStartup);
             if (this.GetComponentInChildren<Rythm>().CanDash())
             {
                 ChangeColor(Color.green);
